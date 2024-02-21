@@ -1,0 +1,253 @@
+/* Add this CSS for the modal */
+.task-modal {
+	display: block;
+	position: fixed;
+	z-index: 3;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.task-modal-content {
+	display: block;
+	background-color: #f0f0f0;
+	/* background-color: #fefefe; */
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	/* width: 80%; */
+	max-width: fit-content;
+	border-radius: 5px;
+	position: relative;
+	z-index: 4;
+	/* background-color: red; */ /* think about changing the background color */
+}
+
+.close {
+	color: #777;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+	color: #444;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.taskForm {
+	margin-top: 25px;
+	display: block;
+	position: relative;
+}
+
+.taskForm * {
+	display: block;
+	position: relative;
+	margin: 12PX 0;
+	padding: 5px;
+	width: 85%;
+	color: #777;
+	font-size: 15px;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	outline: none;
+	border: 1px solid #777;
+	border-radius: 2px;
+	border-color: #aaa;
+}
+
+.taskForm input:focus, .taskForm textarea:focus {
+	/* font-family: 'Courier New', Courier, monospace; */
+	padding: 8px;
+	color: #555;
+}
+
+.text-input {
+	all: unset;
+	margin: 0;
+	padding: 0;
+	display: block;
+	position: relative;
+	width: 100%;
+}
+
+.taskForm .text-input label {
+	all: unset;
+	display: block;
+	position: absolute;
+	font-size: 125%;
+	left: 1%;
+	top: 10%;
+	z-index: 2;
+	padding: 5px;
+	color: #777;
+	pointer-events: none; /* makes the label not clickable just like it does not exist */
+	transition: 0.1s;
+}
+
+.taskForm .text-input input:focus ~ label,
+.taskForm .text-input input:valid ~ label {
+	transition: 0.1s;
+	font-size: 10px;
+}
+
+.taskForm .text-input input:focus,
+.taskForm .text-input input:valid {
+	padding-top: 24px;
+	padding-left: 10px;
+}
+
+.taskForm textarea {
+	font-size: 14px;
+	overflow: hidden;
+	resize: none;
+	height: auto;
+	max-height: 500px;
+}
+
+.taskForm input[type='datetime-local'] {
+	color: #aaa;
+}
+
+.taskForm input[type='datetime-local']:focus {
+	color: #555;
+}
+
+.taskForm button {
+	width: max-content;
+	padding: 5px 8px;
+}
+
+button.add-task {
+	color: #eee;
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.add-group {
+	display: block;
+	background-color: none;
+	padding: 0;
+}
+
+.add-group legend, .add-group input {
+	margin: 0;
+	margin-left: 4px;
+	padding: 2px;
+	padding-left: 4px;
+}
+
+.add-group input {
+	width: calc(100% - 2px);
+	border: none;
+}
+
+
+
+
+
+.taskForm {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	padding: 20px;
+	border-radius: 10px;
+	background-color: #f0f0f0;
+}
+.taskForm input, .taskForm select, .taskForm textarea, .taskForm button {
+	width: 100%;
+	margin: auto;
+	/* left: 0; */
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+}
+.taskForm button {
+	margin-top: 15px;
+	margin-bottom: 0px;
+	background-color: #4CAF50;
+	color: white;
+	cursor: pointer;
+}
+.taskForm button:hover {
+	background-color: #45a049;
+}
+
+select {
+	width: 100%;
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	appearance: none;
+	background-color: #f0f0f0;
+	font-size: 16px;
+}
+option {
+	padding: 10px;
+}
+
+option {
+	padding: 10px;
+	background-color: #fff;
+	color: #333;
+}
+option:hover {
+	background-color: #f0f0f0;
+}
+
+.confirm-box {
+    /* display: none; */
+    position: fixed;
+    width: 300px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -100px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    padding: 20px;
+    text-align: center;
+	height: max-content;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: #999;
+}
+
+#confirmBox p {
+    font-size: 18px;
+}
+
+#confirmBox button {
+	border: none;
+	padding: 10px 20px;
+	margin: 10px;
+	border-radius: 5px;
+	color: #fff;
+	cursor: pointer;
+	transition: opacity 0.5s;
+}
+
+#confirmBox button:hover {
+	opacity: 0.8;
+}
+
+#yesButton {
+	background-color: #28a745;
+}
+
+
+#noButton {
+    background-color: #dc3545;
+}
