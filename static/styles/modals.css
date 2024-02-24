@@ -158,6 +158,8 @@ button.add-task {
 	padding: 20px;
 	border-radius: 10px;
 	background-color: #f0f0f0;
+	/* border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px; */
 }
 .taskForm input, .taskForm select, .taskForm textarea, .taskForm button {
 	width: 100%;
@@ -200,6 +202,19 @@ option:hover {
 	background-color: #f0f0f0;
 }
 
+#confirmBox {
+	display: block;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	/* padding: 0; */
+	background-color: rgba(200, 200, 200, 0.4);
+	z-index: 400;
+}
+
 .confirm-box {
     /* display: none; */
     position: fixed;
@@ -225,21 +240,23 @@ option:hover {
     color: #999;
 }
 
-#confirmBox p {
+.confirm-box p {
+	margin-top: 20px;
     font-size: 18px;
 }
 
-#confirmBox button {
+.confirm-box button {
 	border: none;
 	padding: 10px 20px;
-	margin: 10px;
+	margin: 15px;
 	border-radius: 5px;
 	color: #fff;
 	cursor: pointer;
 	transition: opacity 0.5s;
+	margin-top: 30px;
 }
 
-#confirmBox button:hover {
+.confirm-box button:hover {
 	opacity: 0.8;
 }
 

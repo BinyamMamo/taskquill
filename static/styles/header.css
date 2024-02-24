@@ -2,6 +2,7 @@
 	padding: 0;
 	margin: 0;
 }
+
 body {
 	font-family: Arial, sans-serif;
 	/* background-color: #f4f4f4; */
@@ -118,6 +119,10 @@ div.header .options div {
 	/* border-right: 1px solid grey; */
 }
 
+div.header .options div:hover {
+	transform: scale(1.02);
+}
+
 .options-profile {
 	display: flex;
 	flex-direction: row;
@@ -151,5 +156,9 @@ div.header .options div {
 	font-size: 14px;
 	color: #445;
 	/* font-family: 'Courier New', Courier, monospace; */
+	display: block;
+}
+
+.profile:hover + .options {
 	display: block;
 }

@@ -1,0 +1,59 @@
+{% for group in groups %}
+<div class="group">
+	<div class="group-header" style="background-color: {{ group.color }};">
+		<input onchange="save_title(this, '{{ group.id }}')" class="group-title" value="{{ group.title }}"
+			onclick="this.readOnly={% if group.id == 0 %} true {% else %} false {% endif %};" readonly />
+		<button type="button" class="delete-item" onclick="delete_group('{{ group.id }}')" style="display: none;">
+			<i class="fa fa-trash-o"></i>
+		</button>
+		<button class="group-clr" type="button">
+			<i class="fa fa-paint-brush" onclick="this.querySelector('input').click()" aria-hidden="true">
+				<input type="color" oninput="change_color(this, '{{ group.id }}')" name="color" hx-trigger="changed"
+					hx-post="/save_color" />
+			</i>
+		</button>
+		<button type="button" class="collapse-btn" onclick="collapse(this, '{{ group.id }}')">
+			<i class="fa fa-caret-down"
+				style="transform: rotate({% if group.display == 'block'%}0{% else %}180{% endif %}deg)"
+				aria-hidden="true"></i>
+		</button>
+	</div>
+	<div class="group-body" style="display: {{ group.display }};">
+		{% for item in group.members | sort(attribute=sort_by) %}
+		<div class="item">
+			<div class="label" style="display: inline-block; width: 80%">
+				<span style="display: block; width: 100%;" onclick="show_desc('{{ item.id }}')">
+					{{ item.title }}
+				</span>
+				<button onload="console.log('hello');" data-datetime="{{ item.deadline }}" type="button"
+					style="font-size: 10px; font-family: monospace; font-weight: bolder; padding-top: 4px; color: brown"
+					onclick="edit_task('{{ item.id }}', '{{ item.group_id }}', '{{ item.title }}', '{{ item.deadline }}', '{{ item.description }}')"
+					title="{{ item.deadline }}">
+					⏰ {{ item.deadline }}
+				</button>
+			</div>
+			<button class="edit-item"
+				onclick="edit_task('{{ item.id }}', '{{ item.group_id }}', '{{ item.title }}', '{{ item.deadline }}', '{{ item.description }}')"><i
+					class="fa fa-pencil"></i></button>
+			<button type="button" class="delete-item" onclick="delete_task('{{ item.id }}')"><i
+					class="fa fa-trash-o"></i></button>
+			<button style="display: none;" class="check-item" onclick="request('finished this task?', ()=>{
+								this.parentElement.querySelector('.label').style.textDecoration='line-through'})"><i
+					class="fa fa-check"></i></button>
+			<!-- <button class="check-item"><i class="fa fa-check-square-o"></i></button> -->
+		</div>
+		<p class="description" style="display: none;" data-descid="{{ item.id }}">
+			{{ item.description }}
+		</p>
+		{% endfor %}
+
+		<div class="item-more">
+			<input type="text" name="taskInput" required> <span> <i class="fa fa-plus" aria-hidden="true"></i> ADD
+				TASK</span>
+			<button class="edit-item" onclick="add_task('{{ group.id }}', this)"><i <i class="fa fa-pencil"
+					aria-hidden="true"></i>
+			</button>
+		</div>
+	</div>
+</div>
+{% endfor %}

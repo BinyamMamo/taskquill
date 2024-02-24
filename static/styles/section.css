@@ -28,18 +28,25 @@
 
 .description {
 	text-align: justify;
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 	display: flex;
 	margin: 10px;
 	border: 1px solid #eee;
-	padding: 8px 20px;
+	/* padding: 8px 20px; */
+	padding: 8px 8px;
 	margin-top: -14px;
 	border-top: none;
 	font-size: 14px;
+	opacity: 0.65;
 }
 
 .item-more {
 	padding: 0;
 	position: relative;
+	/* border: 2px solid #1e1e1e; */
+	border-width: 2px;
+	border-color: #7e7e7e;
+	border-radius: 3px;
 }
 
 .item *, .item-more * {
@@ -73,22 +80,29 @@
 	white-space: nowrap;
 	overflow: hidden;
 	margin: 5px;
-	font: 17px;
+	font-size: 17px;
 	font-weight: 550;
 	left: 0;
 	transition: 0.75s;
-	opacity: 0.65;
+	color: #4e4e4e;
+	/* opacity: 0.65; */
+	/* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+	font-family: monospace;
+	/* color: tomato; */
+	padding-left: 15px;
+	padding-top: 0px;
 }
 
 .item-more button {
 	display: none;
 	opacity: 0;
+	right: 0;
 	transition: 1s;
 }
 
 .item-more input:focus ~ button {
 	/* display: block; */
-	margin-right: 10px;
+	margin-right: 2px;
 	transition: 0.5s;
 	opacity: 1;
 	display: block;
@@ -181,6 +195,11 @@
 .group-title:focus {
 	cursor: text;
 	opacity: 0.8;
+}
+
+.group-header > .delete-item{
+	font-size: 17px;
+	padding-right: 2px;
 }
 
 .group-clr {

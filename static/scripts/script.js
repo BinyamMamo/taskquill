@@ -18,11 +18,15 @@ function collapse(caret, group_id) {
 	if (state === 'none') {
 		caret.parentElement.parentElement.querySelector('.group-body').style.display = 'block';
 		caret.parentElement.parentElement.querySelector('.group-body').transion = '2s';
+		caret.parentElement.querySelector('.delete-item').style.display = 'none';
+		caret.parentElement.querySelector('.group-clr').style.display = 'block';
 		caret.style.transform = 'rotate(180deg)';
 		display = "block";
 	} else {
 		caret.parentElement.parentElement.querySelector('.group-body').style.display = 'none';
 		caret.parentElement.parentElement.style.border = 'none';
+		caret.parentElement.querySelector('.delete-item').style.display = 'block';
+		caret.parentElement.querySelector('.group-clr').style.display = 'none';
 		caret.style.transform = 'rotate(0deg)';
 		display = "none";
 	}
@@ -41,44 +45,7 @@ function collapse(caret, group_id) {
 	});
 }
 
-function promptYesNo(message, yes = "yes", no = "no") {
-	return new Promise((resolve, reject) => {
-		var confirmBox = document.getElementById("confirmBox");
-		var yesButton = document.getElementById("yesButton");
-		var noButton = document.getElementById("noButton");
-		yesButton.innerHTML = yes;
-		noButton.innerHTML = no;
-		confirmBox.querySelector('p').innerHTML = message;
-		confirmBox.style.display = "block";
-
-		yesButton.addEventListener("click", function () {
-			// User clicked "Yes"
-			confirmBox.style.display = "none";
-			resolve(true);
-		});
-
-		noButton.addEventListener("click", function () {
-			// User clicked "No"
-			// confirmBox.style.display = "none";
-			resolve(false);
-		});
-	});
-}
-
-function request(message, fun1, fun2=() => {}, yes = "yes", no = "no") {
-	promptYesNo(message, yes, no).then((result) => {
-		if (result) {
-			// User clicked "Yes"
-			fun1();
-		} else {
-			// User clicked "No"
-			fun2();
-		}
-	});
-}
-
 function show_desc(id) {
-	alert("This is clicked!");
 	let query = "p[data-descid='" + id + "']";
 	if (document.querySelector(query).style.display == "block")
 		document.querySelector(query).style.display = "none";
@@ -102,3 +69,50 @@ function toggle(profile) {
 		options.style.display = "block";
 	}
 }
+
+function updateTime() {
+    var buttons = document.querySelectorAll('button[data-datetime]');
+    buttons.forEach(function(button) {
+        var deadline = new Date(button.getAttribute('data-datetime')).getTime();
+        var now = new Date().getTime();
+        var distance = now - deadline;
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+		button.innerHTML = "⏰ " + minutes + "min";
+		if (hours)
+			button.innerHTML = "⏰ " + hours + "hrs " + minutes + "min ";
+		if (hours == 1)
+			button.innerHTML = "⏰ " + hours + "hr " + minutes + "min ";
+		if (days)
+        	button.innerHTML = "⏰ " + days + "days " + hours + "hrs ";
+		if (days == 1)
+        	button.innerHTML = "⏰ " + days + "day " + hours + "hrs ";
+    });
+}
+
+// If you choose beauty:
+// button.title = minutes + "min";
+// if (hours)
+// 	button.title = hours + "hrs " + minutes + "min ";
+// if (hours == 1)
+// 	button.title = hours + "hr " + minutes + "min ";
+// if (days)
+// 	button.title = days + "days " + hours + "hrs ";
+// if (days == 1)
+// 	button.title = days + "day " + hours + "hrs ";
+
+setInterval(updateTime, 1000); // Update every minute
+
+// Add this event listener to your script
+document.addEventListener('click', function(event) {
+	var insideProfile = document.querySelector("div[data-target='profile-options']").contains(event.target);
+	var insideOptions = document.querySelector("div[data-toggle='profile-options']").contains(event.target);
+
+	if (!insideProfile && !insideOptions) {
+		var options = document.querySelector("div[data-toggle='profile-options']");
+		if (options.style.display == "block") {
+			options.style.display = "none";
+		}
+	}
+});

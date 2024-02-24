@@ -5,14 +5,17 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Task Management System</title>
+	<link rel="stylesheet" href="../static/styles/background.css">
 	<link rel="stylesheet" href="../static/styles/header.css">
 	<link rel="stylesheet" href="../static/styles/section.css">
 	<link rel="stylesheet" href="../static/styles/modals.css">
 	
 	<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="../static/scripts/script.js"></script>
+	<script src="../static/scripts/ajax.js"></script>
+	<script src="../static/scripts/background.js"></script>
 	<script src="../static/scripts/modals.js"></script>
+	<script src="../static/scripts/script.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://unpkg.com/htmx.org@1.9.10"></script>
 </head>
@@ -24,10 +27,10 @@
 			<!-- <img src="../static/img/logo.png" alt=""> -->
 			<!-- <h1 onclick="location.reload()">🪶LiteList</h1> -->
 			<h1 onclick="location.reload()">🪶TaskQuill</h1>
-			<div class="profile" onclick="toggle(this)">
+			<div class="profile" onclick="toggle(this)" data-target="profile-options">
 				<img src="https://cdn.vectorstock.com/i/1000x1000/57/22/human-avatar-man-isolated-icon-vector-11705722.webp" alt="">
 			</div>
-			<div class="options" style="display: none;">
+			<div class="options" data-toggle="profile-options" style="display: none;">
 				<div class="options-profile">
 					<img src="https://cdn.vectorstock.com/i/1000x1000/57/22/human-avatar-man-isolated-icon-vector-11705722.webp" alt="">
 					<div>
@@ -36,29 +39,34 @@
 					</div>
 				</div>
 				<div>edit profile</div>
-				<div>change background</div>
+				<div id="openGallery">change background</div>
 				<div>Log Out <i class="fa fa-sign-out" aria-hidden="true"></i></div>
 			</div>
 		</div>
 		<div class="taskForm">
-			<input type="text" name="taskInput" id="taskInput" placeholder="Enter task..." style="display: inline; width: 75%;">
-			<button id="new_task" style="display: inline; font-size: 18px; width: 15%; background-image: linear-gradient(to right, #ff3344 , #ffaa44);" class="add-task" type="button" onclick="add_task(null, this)">Add Task</button>
+			<input type="text" hx-get="/search_task" hx-trigger="keyup changed delay:500ms" hx-target="#taskList" name="taskInput" id="taskInput" placeholder="Search task..." style="display: block; width: 75%; margin: auto;">
+			<button id="new_task" style="display: block; margin: 10pxauto; font-size: 18px; width: fit-content; background-image: linear-gradient(to right, #ff3344 , #ffaa44);" class="add-task" type="button" onclick="add_task(null, this)">Add Task</button>
 		</div>
 		<div id="taskList">
 			{% for group in groups %}
 			<div class="group">
 				<div class="group-header" style="background-color: {{ group.color }};">
-					<input onchange="save_title(this, '{{ group.id }}')" class="group-title" value="{{ group.title }}" onclick="this.readOnly=false;" readonly />
-					<button class="group-clr"><i class="fa fa-paint-brush" onclick="this.querySelector('input').click()"
-							aria-hidden="true"><input type="color"
-								oninput="change_color(this, '{{ group.id }}')" name="color" hx-trigger="changed" hx-post="/save_color" /></i></button>
-					<button class="collapse-btn" onclick="collapse(this, '{{ group.id }}')">
+					<input onchange="save_title(this, '{{ group.id }}')" class="group-title" value="{{ group.title }}" onclick="this.readOnly={% if group.id == 0 %} true {% else %} false {% endif %};" readonly />
+					<button type="button" class="delete-item" onclick="delete_group('{{ group.id }}')" style="display: none;">
+						<i class="fa fa-trash-o"></i>
+					</button>
+					<button class="group-clr" type="button">
+						<i class="fa fa-paint-brush" onclick="this.querySelector('input').click()" aria-hidden="true">
+							<input type="color" oninput="change_color(this, '{{ group.id }}')" name="color" hx-trigger="changed" hx-post="/save_color" />
+						</i>
+					</button>
+					<button type="button" class="collapse-btn" onclick="collapse(this, '{{ group.id }}')">
 						<i class="fa fa-caret-down" style="transform: rotate({% if group.display == 'block'%}0{% else %}180{% endif %}deg)" aria-hidden="true"></i>
 					</button>
 				</div>
 				<div class="group-body" style="display: {{ group.display }};">
-						{% for item in group.members | sort(attribute=sort_by) %}
-						<div class="item">
+					{% for item in group.members | sort(attribute=sort_by) %}
+					<div class="item">
 							<div class="label" style="display: inline-block; width: 80%">
 								<span style="display: block; width: 100%;" onclick="show_desc('{{ item.id }}')">
 									{{ item.title }}
@@ -80,25 +88,36 @@
 						{% endfor %}
 
 						<div class="item-more">
-							<input type="text" name="taskInput" required> <span>add task</span>
+							<input type="text" name="taskInput" required> <span> <i class="fa fa-plus" aria-hidden="true"></i> ADD TASK</span>
 							<button class="edit-item" onclick="add_task('{{ group.id }}', this)"><i
 								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</button>
-							<button class="delete-item" onclick="request('Are u sure u want to delete this?', ()=>{this.parentElement.style.display='none'})"><i
-									class="fa fa-check"></i></button>
 						</div>
-
-					<button class="add_task" type="submit" style="display: none;">+</button>
 				</div>
 			</div>
 			{% endfor %}
 		</div>
 	</div>
 
-	<div id="confirmBox" class="confirm-box" style="display: none;">
-		<p>Do you want to proceed?</p>
-		<button id="yesButton">Yes</button>
-		<button id="noButton">No</button>
+
+	<div id="galleryModal" class="gallerymodal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <h2>Change Background</h2>
+            <input type="search" oninput="searchbg(this)" class="search" placeholder="Search for backgrounds...">
+            <div class="gallery">
+                <!-- Images will be added here by the script -->
+            </div>
+            <h3>Or enter a URL: <input type="url" pattern="https://.*" class="url" id="bg_url" placeholder="https://example.com"></h3>
+            <button type="button" id="save_bg" class="save">Save Changes</button>
+        </div>
+    </div>
+	<div id="confirmBox" style="display: none;">
+		<div class="confirm-box">
+			<p>Do you want to proceed?</p>
+			<button id="yesButton">Yes</button>
+			<button id="noButton">No</button>
+		</div>
 	</div>
 	<div id="taskModal" class="task-modal" onclick="console.log('clicked')" style="display: none;">
 		<div class="task-modal-content">
